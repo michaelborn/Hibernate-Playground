@@ -7,10 +7,11 @@ component{
     property name="entities" type="array";
 
     public function init(){
-        variables.metricsFile      = expandPath( "./metrics.csv" );
         variables.luceeVersion     = getCFEngine();
         variables.hibernateVersion = getHibernateVersion();
         variables.extensionVersion = getExtensionVersion();
+        variables.metricsFile      = expandPath(
+"./metrics-#variables.extensionVersion#.csv" );
         variables.entities = [];
 
         var headers = [
