@@ -1,0 +1,21 @@
+component persistent="true" extends="models.BaseEntity"{
+
+	property 	name="id" 
+					fieldtype="id" 
+					column="id"
+					ormtype="string" 
+					generator="assigned"
+					insert="true"
+					update="false"
+					persistent=true;
+    property 
+        name="name" 
+        sqltype="varchar" 
+        length="255";
+
+    property 
+        name="description" 
+        ormtype="text"
+        sqltype="text"
+        default="";
+}

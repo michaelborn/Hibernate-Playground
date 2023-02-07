@@ -1,0 +1,13 @@
+{
+    "app":{
+        "cfengine":"lucee@5.3.10.97"
+    },
+    "web":{
+        "http":{
+            "port":"39143"
+        }
+    },
+    "cfconfig":{
+        "file":".cfconfig.json"
+    }
+}
