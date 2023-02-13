@@ -10,8 +10,7 @@ component{
         variables.luceeVersion     = getCFEngine();
         variables.hibernateVersion = getHibernateVersion();
         variables.extensionVersion = getExtensionVersion();
-        variables.metricsFile      = expandPath(
-"./metrics-#variables.extensionVersion#.csv" );
+        variables.metricsFile      = expandPath( "./results/metrics-#variables.luceeVersion#-#variables.extensionVersion#.csv" );
         variables.entities = [];
 
         var headers = [
@@ -31,6 +30,7 @@ component{
         doEntityNew();
         doEntityLoad();
         doEntitySave();
+        doPageRequest();
         // Add new metrics here...
     }
 
@@ -41,7 +41,7 @@ component{
             ormReload();
         }
         
-        var elapsed = getTickCount()-start;        
+        var elapsed = getTickCount()-start;
         logMetric( "ORMReload", iterations, elapsed );
     }
 
@@ -57,7 +57,7 @@ component{
             );
         }
 
-        var elapsed = getTickCount()-start;        
+        var elapsed = getTickCount()-start;
         logMetric( "entityNew", iterations, elapsed );
     }
 
@@ -68,7 +68,7 @@ component{
             entityLoad( "TestEntity#i#", createUUID() )
         }
 
-        var elapsed = getTickCount()-start;        
+        var elapsed = getTickCount()-start;
         logMetric( "entityLoad", iterations, elapsed );
     }
 
@@ -80,8 +80,25 @@ component{
         }
         ormFlush();
 
-        var elapsed = getTickCount()-start;        
+        var elapsed = getTickCount()-start;
         logMetric( "entitySave", iterations, elapsed );
+    }
+
+    public function doPageRequest( numeric iterations = 1000, url = "index.cfm" ){
+        var start = getTickCount();
+        for( i = 1; i <= arguments.iterations; i++ ){
+            cfhttp( url = "http://#cgi.SERVER_NAME#:#cgi.SERVER_PORT#/#arguments.url#", result="local.result" ){}
+            if ( local.result.status_code > 299 ){
+                throw( 
+                    message = "Bad status code!",
+                    detail = serializeJSON( local.result )
+                );
+            };
+        }
+
+        var elapsed = getTickCount()-start;
+        logMetric( "pageRequest", arguments.iterations, elapsed );
+        logMetric( "averageRequestTime", arguments.iterations, elapsed/arguments.iterations );
     }
 
     /**
