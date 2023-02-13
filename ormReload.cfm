@@ -1,9 +1,9 @@
 <h1><code>ORMReload()</code> Speed Test</h1>
 
 <cfscript>
-    var start = getTickCount();
+    start = getTickCount();
     new metrics().doORMReload();
-    var end = getTickCount();
+    end = getTickCount();
 </cfscript>
 <cfoutput>
 <p>
