@@ -1,6 +1,7 @@
 component{
 
-    property name="metricsFile" type="string";
+    property name="metricsFileLocal" type="string";
+    property name="metricsFileFull" type="string";
     property name="luceeVersion" type="string";
     property name="hibernateVersion" type="string";
     property name="extensionVersion" type="string";
@@ -10,8 +11,9 @@ component{
         variables.luceeVersion     = getCFEngine();
         variables.hibernateVersion = getHibernateVersion();
         variables.extensionVersion = getExtensionVersion();
-        variables.metricsFile      = expandPath( "./results/metrics-#variables.luceeVersion#-#variables.extensionVersion#.csv" );
-        variables.entities = [];
+        variables.metricsFileLocal = "./results/metrics-#variables.luceeVersion#-#variables.extensionVersion#.csv";
+        variables.metricsFileFull  = expandPath( variables.metricsFileLocal );
+        variables.entities         = [];
 
         var headers = [
             "Test",
@@ -21,17 +23,19 @@ component{
             "Hibernate Version",
             "Elapsed Time"
         ];
-        fileWrite( variables.metricsFile, arrayToList( headers ) & chr(10), "UTF-8" );
+        fileWrite( variables.metricsFileFull, arrayToList( headers ) & chr(10), "UTF-8" );
         return this;
     }
 
-    public function runAll(){
+    public string function runAll(){
         doORMReload();
         doEntityNew();
         doEntityLoad();
         doEntitySave();
         doPageRequest();
         // Add new metrics here...
+
+        return variables.metricsFileLocal;
     }
 
     public function doORMReload(){
@@ -84,10 +88,10 @@ component{
         logMetric( "entitySave", iterations, elapsed );
     }
 
-    public function doPageRequest( numeric iterations = 1000, url = "index.cfm" ){
+    public function doPageRequest( numeric iterations = 1000 ){
         var start = getTickCount();
         for( i = 1; i <= arguments.iterations; i++ ){
-            cfhttp( url = "http://#cgi.SERVER_NAME#:#cgi.SERVER_PORT#/#arguments.url#", result="local.result" ){}
+            cfhttp( url = "http://#cgi.SERVER_NAME#:#cgi.SERVER_PORT#/index.cfm", result="local.result" ){}
             if ( local.result.status_code > 299 ){
                 throw( 
                     message = "Bad status code!",
@@ -117,7 +121,7 @@ component{
             variables.hibernateVersion,
             arguments.elapsedTime
         ];
-        fileAppend( variables.metricsFile, arrayToList( data ) & chr(10), "UTF-8" );
+        fileAppend( variables.metricsFileFull, arrayToList( data ) & chr(10), "UTF-8" );
     }
 
     private string function getHibernateVersion(){

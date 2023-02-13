@@ -2,7 +2,9 @@
 
 <cfscript>
     setting requesttimeout="500";
-    new metrics().runAll();
+    resultFile = new metrics().runAll();
 </cfscript>
 
-<p>The finished metrics CSV file is located at <a href="metrics.csv">metrics.csv</a>.</p>
+<cfoutput>
+    <p>The finished metrics CSV file is located at <a href="#resultFile#">#resultFile#</a>.</p>
+</cfoutput>
