@@ -32,7 +32,7 @@ component{
         doEntityNew();
         doEntityLoad();
         doEntitySave();
-        doPageRequest();
+        doORMStartup();
         // Add new metrics here...
 
         return variables.metricsFileLocal;
@@ -88,10 +88,11 @@ component{
         logMetric( "entitySave", iterations, elapsed );
     }
 
-    public function doPageRequest( numeric iterations = 1000 ){
+    public function doORMStartup(){
+        var iterations = 1;
         var start = getTickCount();
-        for( i = 1; i <= arguments.iterations; i++ ){
-            cfhttp( url = "http://#cgi.SERVER_NAME#:#cgi.SERVER_PORT#/index.cfm", result="local.result" ){}
+        for( i = 1; i <= iterations; i++ ){
+            cfhttp( url = "http://#cgi.SERVER_NAME#:#cgi.SERVER_PORT#/ORMApp/index.cfm", result="local.result" ){}
             if ( local.result.status_code > 299 ){
                 throw( 
                     message = "Bad status code!",
@@ -101,8 +102,7 @@ component{
         }
 
         var elapsed = getTickCount()-start;
-        logMetric( "pageRequest", arguments.iterations, elapsed );
-        logMetric( "averageRequestTime", arguments.iterations, elapsed/arguments.iterations );
+        logMetric( "ORMStartup", iterations, elapsed );
     }
 
     /**
