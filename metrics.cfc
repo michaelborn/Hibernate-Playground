@@ -141,7 +141,9 @@ component{
     }
 
     private string function getExtensionVersion(){
-        var extension = extensionList().filter( ( extension ) => extension.name == "Hibernate ORM Engine" );
+        var extension = extensionList().filter( ( extension ) => {
+            return extension.name == "Hibernate ORM Engine" || extension.name == "Ortus ORM Extension";
+        });
         if ( !extension.recordCount ){
             throw( "Hibernate extension is not installed; please install it now." );
         } else {

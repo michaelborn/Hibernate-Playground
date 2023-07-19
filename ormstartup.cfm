@@ -4,7 +4,7 @@
 
 <cfscript>
     start = getTickCount();
-    new metrics().doPageRequest();
+    new metrics().doORMStartup();
     end = getTickCount();
 </cfscript>
 <cfoutput>

@@ -4,9 +4,18 @@ component {
 	// H2 datasource
     // Inline datasources are only supported in Lucee.
     this.datasource={
-        class: 'org.h2.Driver'
-        , bundleName: 'org.h2'
-        , connectionString: 'jdbc:h2:#getDirectoryFromPath(getCurrentTemplatePath())#/datasource/db;MODE=MySQL'
+        class: "org.h2.Driver", 
+        bundleName: "org.lucee.h2", 
+        bundleVersion: "2.1.214.0001L",
+        connectionString: "jdbc:h2:./test/dbh2;MODE=MySQL",
+        username: "",
+        password: "",
+        
+        // optional settings
+        connectionLimit:-1, // default:-1
+        liveTimeout:15, // default: -1; unit: minutes
+        alwaysSetTimeout:true, // default: false
+        validate:false, // default: false
     };
 
     rootPath = getDirectoryFromPath( getCurrentTemplatePath() );
