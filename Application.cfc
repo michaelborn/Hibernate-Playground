@@ -19,7 +19,7 @@ component {
 	 * @url https://luceeserver.atlassian.net/browse/LDEV-4276
 	 */
 	javaSystem = createObject( "java", "java.lang.System" );
-	// javaSystem.setProperty("javax.xml.bind.context.factory", "com.sun.xml.bind.v2.ContextFactory");
+	javaSystem.setProperty("javax.xml.bind.context.factory", "com.sun.xml.bind.v2.ContextFactory");
 	javaSystem.setProperty( "lucee.cli.printExceptions", true );
 	javaSystem.setProperty( "felix.log.level", "debug" );
 

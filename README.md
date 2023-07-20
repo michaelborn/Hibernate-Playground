@@ -21,7 +21,7 @@ speed tests and log the results to `metrics-{VERSION}.csv`, where `{VERSION]` is
 Each performance run must be carefully generated using the following process:
 
 1. Starting the server
-2. Install the extension version (3.5, 5.4, modified 5.4)
+2. Install the extension version (3.5, 5.4, modified 5.4, etc.)
 3. Restarting the server
 4. Browsing to metrics gatherer ([`all.cfm`](http://localhost:39143/all.cfm)) *without hitting any other page*
 
